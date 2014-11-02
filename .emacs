@@ -69,7 +69,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(custom-enabled-themes (quote (solarized-dark)))
- '(custom-safe-themes (quote ("8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" default))))
+ '(custom-safe-themes (quote ("fc5fcb6f1f1c1bc01305694c59a1a861b008c534cae8d0e48e4d5e81ad718bc6" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" default))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -77,4 +77,29 @@
  ;; If there is more than one, they won't work right.
  '(default ((t (:family "DejaVu Sans Mono" :foundry "unknown" :slant normal :weight normal :height 98 :width normal)))))
 
-(require 'dirtree)
+;;(require 'dirtree)
+(require 'scheme-complete)
+(eval-after-load 'scheme
+  '(define-key scheme-mode-map "\t" 'scheme-complete-or-indent))
+(require 'edts-start)
+
+(require 'tabbar)
+
+(global-set-key [C-S-tab] 'tabbar-backward-tab)
+(global-set-key [C-tab] 'tabbar-forward-tab)
+
+(set-face-foreground 'tabbar-default "LightSteelBlue")
+(set-face-background 'tabbar-default "DarkSlateGray")
+(set-face-foreground 'tabbar-selected "pale green")
+(set-face-bold-p 'tabbar-selected t)
+(set-face-attribute 'tabbar-button nil :box '(:line-width 1 :color "gray72"))
+
+(setq tabbar-buffer-groups-function
+      (lambda () 
+        (list
+         (cond
+          ((find (aref (buffer-name (current-buffer)) 0) " *") "*")
+          (t "All Buffers"))
+         )))
+
+(tabbar-mode)
